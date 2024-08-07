@@ -1,0 +1,6 @@
+**/tailwindcss
+**/Dockerfile
+envfastapi
+docker-compose.yml
+node_modules
+.git
