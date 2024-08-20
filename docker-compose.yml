@@ -6,7 +6,9 @@ services:
       context: .
       dockerfile: ./web/Dockerfile
     container_name: fastapi
-    image: justkacz/fastapi:1.0
+    image: justkacz/fastapi
+    depends_on:
+      - db
     ports:
       - "8000:8000"
     # volumes:
