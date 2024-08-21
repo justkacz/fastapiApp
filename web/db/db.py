@@ -42,7 +42,7 @@ class DBManager:
 
 
 
-db_manager = DBManager(uri=os.getenv("URI_MONGODBATLAS"), database_name=os.getenv("MONGODB_NAME"))
+db_manager = DBManager(uri=os.getenv("URI_MONGODBATLAS"), database_name="fastapidb")
 
 # db_manager = DBManager(uri="mongodb://mongodb:27017", database_name="db_local")
 
