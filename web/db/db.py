@@ -1,5 +1,9 @@
 from motor.motor_asyncio import AsyncIOMotorClient
 from bson import ObjectId
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 
 class DBManager:
@@ -36,4 +40,20 @@ class DBManager:
         return result.deleted_count > 0
 
 
-db_manager = DBManager(uri="mongodb://mongodb:27017", database_name="db_local")
+
+
+db_manager = DBManager(uri=os.getenv("URI_MONGODBATLAS"), database_name=os.getenv("MONGODB_NAME"))
+
+# db_manager = DBManager(uri="mongodb://mongodb:27017", database_name="db_local")
+
+
+# from pymongo.mongo_client import MongoClient
+# uri = "mongodb+srv://<username>:<password>@cluster0.qyn7o.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+# # Create a new client and connect to the server
+# client = MongoClient(uri)
+# # Send a ping to confirm a successful connection
+# try:
+#     client.admin.command('ping')
+#     print("Pinged your deployment. You successfully connected to MongoDB!")
+# except Exception as e:
+#     print(e)
