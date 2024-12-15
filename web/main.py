@@ -1,61 +1,57 @@
-from bson import ObjectId
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, Request, responses
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
-from pydantic import BaseModel
-from typing import Optional
-from uuid import UUID, uuid4
-from .db.db import db_manager
-from typing import List
+from fastapi.exceptions import HTTPException
+from .core.error_handler import RedirectException
+from dotenv import load_dotenv
+from pydantic import ValidationError
 
 
-class Item(BaseModel):
-    name: str
-    description: Optional[str] = None
-    price: float
-    on_offer: bool = False
-
-
-app = FastAPI()
-app.mount("/static", StaticFiles(directory="web/static"), name="static")
+load_dotenv()
 
 templates = Jinja2Templates(directory="web/templates")
 
-@app.get("/")
-async def index(request:Request):
-    return templates.TemplateResponse("base.html", {"request":request})
+from web.routers import router_books, router_users
 
 
-@app.post("/items/", response_model=Item)
-async def create_item(item: Item):   
-    new_item = await db_manager.create_item(item.model_dump())
-    return new_item
+# async def http_exception(request: Request, exc: HTTPException):
+#     message = exc.detail
+#     return templates.TemplateResponse(
+#         request=request,
+#         name=f"{exc.headers['Location']}.html",
+#         context={"msg": message},
+#         status_code=exc.status_code,
+#     )
+
+# async def responseredirect(request: Request, exc: HTTPException):
+#     message = exc.detail
+#     return responses.RedirectResponse(
+#         f"{exc.headers['Location']}?msg={message}",
+#         status_code=302,
+#     )
 
 
-@app.get("/items/", response_model=List[Item])
-async def read_items():
-    return await db_manager.read_items()
+# exception_handlers = { 302: responseredirect, 404: http_exception, 403: http_exception,
+#                       401: http_exception}
+
+# app = FastAPI(exception_handlers=exception_handlers)
+app = FastAPI()
+app.mount("/static", StaticFiles(directory="web/static"), name="static")
+
+app.include_router(router_users.router, tags=["users"])
+app.include_router(router_books.router, tags=["books"])
 
 
-@app.get("/items/{item_id}", response_model=Item)
-async def read_item(item_id: str):
-    item = await db_manager.read_item(ObjectId(item_id))
-    if item is None:
-        raise HTTPException(status_code=404, detail="Item not found")
-    return item
+@app.exception_handler(RedirectException)
+async def unicorn_exception_handler(request: Request, exc: RedirectException):
+    return responses.RedirectResponse(
+        f"{exc.loc}?msg={exc.detail}",
+        status_code=302,
+    )
 
-
-@app.put("/items/{item_id}", response_model=Item)
-async def update_item(item_id: str, item: Item):
-    updated_item = await db_manager.update_item(ObjectId(item_id), item.model_dump())
-    if updated_item is None:
-        raise HTTPException(status_code=404, detail="Item not found")
-    return updated_item
-
-
-@app.delete("/items/{item_id}", response_model=str)
-async def delete_item(item_id: str):
-    deleted = await db_manager.delete_item(ObjectId(item_id))
-    if not deleted:
-        raise HTTPException(status_code=404, detail="Item not found")
-    return "Item deleted successfully"       
+# @app.exception_handler(ValidationError)
+# async def handler_validation_error(request, exc):
+#     return responses.RedirectResponse(
+#         f"login?msg=Password should be minimum 4 letters",
+#         status_code=302,
+#     )

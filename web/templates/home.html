@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- MESSAGE ALERT -->
+{% if msg %}
+<!-- <div class="flex inline-flex justify-between bg-teal-100 border border-teal-400 text-teal-700 px-4 py-3 my-2 rounded " -->
+  <div class="flex inline-flex justify-between  {% if 'ERR_' in msg %} bg-red-100 border border-red-400 text-red-700 {% elif 'INF_' in msg %} bg-blue-100 border border-blue-400 text-blue-700 {% else %} bg-teal-100 border border-teal-400 text-teal-700 {% endif %} px-4 py-3 my-2 rounded "
+ role="alert">
+ <span class="block sm:inline pl-2">
+     <!-- <strong class="font-bold">Success</strong> -->
+     {{ msg[4:] }}
+ </span>
+ <span class="inline" onclick="return this.parentNode.remove();">
+     <svg class="fill-current h-6 w-6" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+         <title>Close</title>
+         <path
+             d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" />
+     </svg>
+ </span>
+</div>
+{% endif %}
+
+<p class="text-8xl">Published date: {{ published_date }}</p>
+<h1 class="text-2xl">Recently added 3</h1>
+{% for book in books_db %}
+<h1 class="text-2xl">{{ book['title'] }}</h1>
+<p>{{ book['description'] }}</p>
+{% endfor %}
+<h1 class="text-2xl">Bestsellers from NewYork Times</h1>
+{% for book in books_api %}
+    <h1 class="text-2xl">{{ book['title'] }}</h1>
+    <p>{{ book['description'] }}</p>
+{% endfor %}
+
+
+{% endblock %}

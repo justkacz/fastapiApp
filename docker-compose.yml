@@ -9,10 +9,11 @@ services:
     image: justkacz/fastapi
     depends_on:
       - db
+    pull_policy: build
     ports:
       - "8000:8000"
-    # volumes:
-    #   - ./web:/app
+    volumes: # to make changes visible without image removal
+      - ./web:/web
     networks:
       - fastapinet
 
@@ -20,13 +21,17 @@ services:
       - FLASK_ENV=development
 
   db:
-    image: mongo:5.0
+    image: mongo:5.0.0
     container_name: mongodb
     ports:
       - 27017:27017
     networks:
       - fastapinet
+    restart: always
+    environment:
+      - MONGO_INITDB_DATABASE=booksdb
     volumes:
+      - ./web/db/scripts:/docker-entrypoint-initdb.d/seed.js # add data when container is initialized
       - mongodbdata:/data/db
 
   
