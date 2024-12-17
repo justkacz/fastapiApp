@@ -6,9 +6,11 @@ import os
 load_dotenv()
 
 
-URI_DOCKER = "mongodb://mongodb:27017"
+# URI_DOCKER = "mongodb://mongodb:27017"
+URI_MONGODBATLAS = "mongodb+srv://fastapi:fastapi@cluster0.qyn7o.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 
-client = AsyncIOMotorClient(URI_DOCKER)
+# client = AsyncIOMotorClient(URI_DOCKER)
+client = AsyncIOMotorClient(URI_MONGODBATLAS)
 
 database = client.booksdb
 
