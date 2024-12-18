@@ -6,7 +6,7 @@ from fastapi import (
     status,
     Form,
     Response,
-    responses,
+    responses
 )
 from typing import Annotated, Optional
 from fastapi.encoders import jsonable_encoder
@@ -115,9 +115,10 @@ async def login(response: Response, request: Request, email: str = Form(...), pa
     else:
         if await authenticate_user(email, password):
             jwt_token = create_access_token(email, timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
+            print(jwt_token)
             response = responses.RedirectResponse(
                         "/?msg=SUC_Login successful",
-                        status_code=200
+                        status_code=302
                     )
             response.set_cookie(
                 key="access_token", value=f"Bearer {jwt_token}", httponly=True
@@ -137,6 +138,6 @@ async def logout(request: Request, token=Depends(acccess_token_bearer)):
     await add_jti_to_blocklist(jti)
     return responses.RedirectResponse(
         "/login?msg=INF_You are successfully logged out.",
-        status_code=200,
+        status_code=302,
     )
 
