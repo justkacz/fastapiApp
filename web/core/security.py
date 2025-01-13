@@ -13,6 +13,9 @@ import uuid
 import logging
 from jwt.exceptions import InvalidTokenError
 from fastapi.security.utils import get_authorization_scheme_param
+from starlette.authentication import (
+    AuthCredentials, AuthenticationBackend, AuthenticationError, SimpleUser
+)
 
 
 SECRET_KEY = "c7d2b1f170dcc6dfaf0fd9981100426c111926578f79d71cc9e3009326666f39"
@@ -34,7 +37,7 @@ class TokenBearer(HTTPBearer):
         if not authorization or scheme.lower() != "bearer":
             if self.auto_error:
                 raise RedirectException(status_code=401, 
-                                    detail="ERR_Please log in or create an account",
+                                    detail="INF_Please log in or create an account",
                                     loc = "/register")
             else:
                 return None
@@ -48,6 +51,30 @@ class TokenBearer(HTTPBearer):
 
 
 acccess_token_bearer = TokenBearer()
+
+
+class BearerTokenAuthBackend(AuthenticationBackend):
+    """
+    This is a custom auth backend class for a middleware
+    """
+    async def authenticate(self, request):
+        authorization: str = request.cookies.get("access_token")
+        scheme, param = get_authorization_scheme_param(authorization)
+        # if not authorization or scheme.lower() != "bearer":
+        #         return None
+        try:
+            payload = jwt.decode(
+            jwt=param,
+            key=SECRET_KEY,
+            algorithms=[ALGORITHM]
+            )
+        except:
+             return None
+        if await token_in_blocklist(payload.get('jti')):
+             return None
+        return param, SimpleUser(payload['sub'])
+
+
 
 def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
@@ -145,6 +172,5 @@ async def add_jti_to_blocklist(jti: str) -> None:
 
 
 async def token_in_blocklist(jti:str) -> bool:
-   
    jti =  await blocklist_collection.find_one({"jti": jti})
    return jti is not None

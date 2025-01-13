@@ -106,16 +106,12 @@ def login(request: Request, msg: str = None):
 async def login(response: Response, request: Request, email: str = Form(...), password: str = Form(...)):
     user = await get_user(email)
     if user is None:
-        # raise HTTPException(status_code=401, 
-        #                     detail="ERR_Email does not exist. Please create an account.",
-        #                     headers = {"Location": "login"})
         raise RedirectException(status_code=401,
                                 detail="ERR_Email does not exist. Please create an account.",
                                 loc="login")
     else:
         if await authenticate_user(email, password):
             jwt_token = create_access_token(email, timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
-            print(jwt_token)
             response = responses.RedirectResponse(
                         "/?msg=SUC_Login successful",
                         status_code=302

@@ -5,7 +5,8 @@ from fastapi.exceptions import HTTPException
 from .core.error_handler import RedirectException
 from dotenv import load_dotenv
 from pydantic import ValidationError
-
+from .core.security import BearerTokenAuthBackend
+from starlette.middleware.authentication import AuthenticationMiddleware
 
 load_dotenv()
 
@@ -36,10 +37,15 @@ from web.routers import router_books, router_users
 
 # app = FastAPI(exception_handlers=exception_handlers)
 app = FastAPI()
+# app = FastAPI(middleware=[Middleware(AuthenticationMiddleware, backend=BearerTokenAuthBackend())])
+app.add_middleware(AuthenticationMiddleware, backend=BearerTokenAuthBackend())
+
 app.mount("/static", StaticFiles(directory="web/static"), name="static")
 
 app.include_router(router_users.router, tags=["users"])
 app.include_router(router_books.router, tags=["books"])
+
+
 
 
 @app.exception_handler(RedirectException)
