@@ -1,50 +1,107 @@
 from ..db.db import books_collection
 import requests
+import re
 from fastapi import HTTPException, status
+from datetime import datetime
+import math
+
+API_KEY = "AIzaSyAbFstk55PIArsCEJA4y2BomWhS3Cb_Fzo"
+
+def api_volume_details(volumeid: str) -> dict:
+    book_data={}
+    print(volumeid)
+    url = f"https://www.googleapis.com/books/v1/volumes/{volumeid}?key={API_KEY}"
+    response = requests.get(url).json()
+    book_data['id']=response.get('id', None)
+    book_data['category']=response['volumeInfo'].get('categories', ["General"])[0].split('/')[0]
+    if len(response['volumeInfo']['authors']) > 1:
+        book_data['authors']=(', ').join(response['volumeInfo']['authors'][:3])
+    elif len(response['volumeInfo']['authors']) == 0:
+        book_data['authors']='Author Unknown'
+    else:
+        book_data['authors']=response['volumeInfo']['authors'][0]
+    book_data['title']=response['volumeInfo'].get('title', None)
+    book_data['description']=re.sub(r'<.[a-z]>|<[a-z]>', '', response['volumeInfo'].get('description', 'None'))
+    # book_data['description']=response['volumeInfo'].get('description', None)
+    book_data['rating'] = response['volumeInfo'].get('averageRating', 0)
+    book_data['ratingcnt'] = response['volumeInfo'].get('ratingsCount', 0)
+    book_data['publishedDate']=response['volumeInfo'].get('publishedDate', None)
+    # book_data['imageLinks']=response['volumeInfo']['imageLinks'].get('medium', None)
+    book_data['imageLinks']=response['volumeInfo'].get('imageLinks', None)
+    book_data['previewLink']=response['volumeInfo'].get('previewLink', 'http://books.google.pl')
+    return book_data
 
 
-async def read_all_books() -> list:
+
+
+
+async def recently_added() -> list:
     books = []
-    async for book in books_collection.find():
-        # book['id'] = str(book['_id'])
-        # del[book['_id']]
-        books.append(book)
+    async for book in books_collection.find().sort({ '_id' : -1 }).limit(4):
+        book_data=api_volume_details(book['volumeid'])
+        book_data['datediff'] = (datetime.now().date() - book['createdon'].date()).days
+        books.append(book_data)
     return books
 
 
+
 async def read_user_books(username: str) -> list:
-    user_books = []
-    async for book in books_collection.find({"username": username}):
-        # book['id'] = str(book['_id'])
-        # del[book['_id']]
-        user_books.append(book)
+    books_db = [doc async for doc in books_collection.find({"username": username})]
+    if books_db is not None:
+        user_books = []
+        for book in books_db:
+            book_data=api_volume_details(book['volumeid'])
+            user_books.append(book_data)
     return user_books
 
 
 async def add_book(book_data: dict) -> dict:
-    book = await books_collection.insert_one(book_data)
-    new_book = await books_collection.find_one(
-        {"_id": book.inserted_id}, {"_id": False}
+    book_exist = await books_collection.find_one(
+        {"volumeid": book_data['volumeid'], "username": book_data['username']}
     )
-    return new_book
+    print('*************************************************************book_exist', book_exist)
+    if book_exist is None:
+        book = await books_collection.insert_one(book_data)
+        new_book = await books_collection.find_one(
+            {"_id": book.inserted_id}, {"_id": False}
+        )
+        print('*************************************************************new_book', new_book)
+        return new_book
+    return None
+
+async def delete_book(volumeid: str, email: str):
+    await books_collection.delete_one({"volumeid": volumeid, "username": email})
 
 
-async def search_book(title: str, author: str):
-    API_KEY = "AIzaSyAbFstk55PIArsCEJA4y2BomWhS3Cb_Fzo"
-    url = f"https://www.googleapis.com/books/v1/volumes?q={title}+inauthor:{author}&key={API_KEY}"
+async def search_book(title: str, author: str, subject: str):
+    url = f"https://www.googleapis.com/books/v1/volumes?q={title}+inauthor:{author}+intitle:{title}+insubject:{subject}&printType=books&maxResults=40&key={API_KEY}"
     response = requests.get(url).json()
     if "items" in response:
+        pages = []
+        ranges = []
+        n=12
+        for j in range(0,math.ceil(len(response['items'])/12)):
+            pages.append(j+1)
+            ranges.append(slice(j*n, j*n+n))
         all_results = []
         for i in range(len(response["items"])):
+            # v_url = f"https://www.googleapis.com/books/v1/volumes/{response["items"][i]["id"]}?key={API_KEY}"
+            # v_response = requests.get(v_url).json()
+            volume_details = api_volume_details(response["items"][i]["id"])
             all_results.append(
                 {
-                    "title": response["items"][i]["volumeInfo"]["title"],
+                    "volumeid": response["items"][i]["id"],
+                    "title": response["items"][i]["volumeInfo"].get("title", None),
                     "authors": response["items"][i]["volumeInfo"].get(
                         "authors", "Data not available"
                     )[0],
                     "publishedDate": response["items"][i]["volumeInfo"].get(
                         "publishedDate", "Data not available"
                     ),
+                    "description": volume_details['description'],
+                    "rating": volume_details['rating'],
+                    "ratingcnt": volume_details['ratingcnt'],
+                    "category": volume_details['category'],
                     "language": response["items"][i]["volumeInfo"].get(
                         "language", "Data not available"
                     ),
@@ -54,6 +111,6 @@ async def search_book(title: str, author: str):
                     ),
                 }
             )
-        return all_results
+        return all_results, pages, ranges
     else:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No records found")
+        return None

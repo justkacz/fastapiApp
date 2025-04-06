@@ -20,7 +20,7 @@ from starlette.authentication import (
 
 SECRET_KEY = "c7d2b1f170dcc6dfaf0fd9981100426c111926578f79d71cc9e3009326666f39"
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 2
+ACCESS_TOKEN_EXPIRE_MINUTES = 60
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
@@ -41,8 +41,13 @@ class TokenBearer(HTTPBearer):
                                     loc = "/register")
             else:
                 return None
-        # payload = jwt.decode(param, SECRET_KEY, algorithms=ALGORITHM)
         payload = decode_token(param)
+        email = payload.get("sub")
+        user = await get_user(email)
+        if user is None:
+            raise RedirectException(status_code=401,
+                        detail="ERR_Email does not exist. Please create an account.",
+                        loc="/register")
         if await token_in_blocklist(payload.get('jti')):
             raise RedirectException(status_code=401, 
                                 detail="INF_You are logged out. Please log in.",
@@ -60,14 +65,12 @@ class BearerTokenAuthBackend(AuthenticationBackend):
     async def authenticate(self, request):
         authorization: str = request.cookies.get("access_token")
         scheme, param = get_authorization_scheme_param(authorization)
-        # if not authorization or scheme.lower() != "bearer":
-        #         return None
         try:
             payload = jwt.decode(
-            jwt=param,
-            key=SECRET_KEY,
-            algorithms=[ALGORITHM]
-            )
+                jwt=param,
+                key=SECRET_KEY,
+                algorithms=[ALGORITHM]
+                )
         except:
              return None
         if await token_in_blocklist(payload.get('jti')):
@@ -76,11 +79,11 @@ class BearerTokenAuthBackend(AuthenticationBackend):
 
 
 
-def verify_password(plain_password, hashed_password):
+def verify_password(plain_password: str, hashed_password: str):
     return pwd_context.verify(plain_password, hashed_password)
 
 
-def get_password_hash(password):
+def get_password_hash(password: str):
     return pwd_context.hash(password)
 
 
@@ -152,7 +155,7 @@ def decode_token(token: str) -> dict:
         #                     detail="ERR_Your session expired, please log in.",
         #                     headers = {"Location": "/login"})
         raise RedirectException(status_code=401, 
-                                    detail="ERR_Your session expired, please log in.",
+                                    detail="INF_Your session expired, please log in.",
                                     loc = "/login")
     except Exception as e:
         logging.exception(e)
@@ -168,6 +171,8 @@ async def register_user(user_data: dict):
 
 
 async def add_jti_to_blocklist(jti: str) -> None:
+    # clean up expired tokens
+    await blocklist_collection.delete_many({"createdon": {"$lt": datetime.now() - timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)}})
     await blocklist_collection.insert_one({"jti": jti, 'createdon': datetime.now()})
 
 

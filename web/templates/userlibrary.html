@@ -1,26 +1,131 @@
 {% extends "base.html" %}
 {% block content %}
 
-<!-- ERROR MESSAGE -->
-{% for error in errors %}
-<div class="flex inline-flex justify-between bg-teal-100 border border-teal-400 text-teal-700 px-4 py-3 my-2 rounded "
- role="alert">
- <span class="block sm:inline pl-2">
-     <strong class="font-bold">Success</strong>
-     {{ error }}
- </span>
- <span class="inline" onclick="return this.parentNode.remove();">
-     <svg class="fill-current h-6 w-6" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-         <title>Close</title>
-         <path
-             d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" />
-     </svg>
- </span>
-</div>
-{% endfor %}
+<!-- <div class="h-[77px] bg-[#ad8a64] w-full"></div> -->
+<div class="max-w-[90%] w-full mx-auto py-20">
+    {% if norecords %}
+    <p class="">{{ norecords }}</p>
+    {% else %}
+    <h2 class="text-center text-xs font-bold uppercase pt-8 pb-4 sm:p-4 tracking-[.03em] "> My Library </h2>
+    <!-- <div class="p-2 sm:p-5 min-w-[360px] bg-[url('../images/p_bg.jpg')] bg-contain"> -->
+    <div class="flex flex-col items-center p-2 sm:p-5 min-w-[360px] bg-cover bg-fixed bg-[url('../images/l_bg.jpg')]">
+    <div class="grid gap-2 max-w-md md:max-w-none sm:gap-4 md:grid-cols-2 xl:grid-cols-4">
+            {% for result in user_books %}
 
-{% for book in user_books %}
-    <p>{{ book }}</p>
-{% endfor %}
+            <div class="overflow-hidden px-2 py-1 sm:px-6 sm:py-3 shadow-lg border-solid border-8 border-[rgb(173,138,100)] relative bg-white">
+                <div class="flex flex-wrap items-center">   
+                  <span class="text-sm sm:text-base font-medium text-stone-500">{{ result['category'] }}</span>
+                  <div class="flex w-full h-24 md:h-32 lg:h-36 relative">                                   
+                    <div class="w-8/12 flex flex-col mr-4 items-start">                 
+                      <!-- <img src="https://stackdiary.com/140x100.png" class="w-full h-full object-cover object-top rounded-lg bg-white">             -->
+                      
+                      <!-- <h2 class="font-bold">{{ result['title'] }}</h2> -->
+                                                   <!-- Modal toggle -->
+                              <!-- <button data-modal-target="default-modal{{ result['title'] }}" data-modal-toggle="default-modal{{ result['title'] }}" class="flex flex-col pt-4 items-start text-start text-stone-900 font-semibold text-base sm:text-xl md:text-base lg:text-xl xl:text-base 2xl:text-xl font-dynalight" type="button"> -->
+                              <button data-modal-target="default-modal{{ result['title'] }}" data-modal-toggle="default-modal{{ result['title'] }}" class="flex flex-col pt-4 items-start text-start text-stone-900 font-semibold" type="button">
+                                  {{ result['title'] }}
+                              </button>
+                              
+                              <!-- Main modal -->
+                              <div id="default-modal{{ result['title'] }}" tabindex="-1" aria-hidden="true" class="hidden bg-[rgba(32,30,27,0.7)] overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                                  <div class="relative p-4 bg-white w-full max-w-2xl max-h-full">
+                                      <!-- Modal content -->
+                                      <div class="relative shadow-sm">
+                                          <!-- Modal header -->
+                                          <div class="flex items-center justify-between px-4 pt-4 pb-1 md:px-5 md:pt-4 border-b rounded-t border-gray-200">
+                                              <div class="flex flex-col ">
+                                                  <h3 class="text-stone-900 font-semibold text-xl font-dynalight">{{ result['title'] }}</h3>
+                                                  <p class="leading-relaxed text-[rgb(173,138,100)]">{{ result['authors'] }}</p>
+                                              </div>
+                                              <button type="button" class="text-stone-400 bg-transparent hover:bg-stone-200 hover:text-stone-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-stone-600 dark:hover:text-white" data-modal-hide="default-modal{{ result['title'] }}">
+                                                  <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                                                  </svg>
+                                                  <span class="sr-only">Close modal</span>
+                                              </button>
+                                          </div>
+                                          <!-- Modal body -->
+                                          <div class="p-4 content md:p-5 space-y-4 flex">
+                                              <p class="item-body text-base pr-4 leading-relaxed text-stone-700"> {{ result['description'] }}</p>
+                                              <div class="w-[33%] flex h-full">                    
+                                                  <!-- <img src="https://stackdiary.com/140x100.png" class="absolute top-0 w-full h-full object-cover object-center rounded-lg bg-white">          -->
+                                                  {% if result['imageLinks'] is not none %}
+                                                    <img class="w-full h-auto object-cover bg-white" src="{{ result['imageLinks']['thumbnail'] }}" alt="Book image">
+                                                  {% else %}
+                                                    <img class="w-full h-auto object-cover object-center bg-white" src="{{ url_for('static', path='/images/no_cover.png') }}" alt="Book image">
+                                                  {% endif %}       
+                                              </div> 
+                                          </div>
+                                          <!-- Modal footer -->
+                                          <div class="flex items-center p-4 md:p-5 border-t border-stone-200 rounded-b dark:border-stone-600">
+                                            <p class="text-sm w-full leading-relaxed text-stone-600">published date: {{ result['publishedDate'] }}</p>  
+                                            <!-- <form id='myForm' class="w-full grid gap-2 px-4" action="/users/me/addbook/{{ result['volumeid'] }}" method="post"> -->
+                                              <form id='myForm' class="w-full grid gap-2 px-4" method="post">
+                                                  <input data-modal-hide="default-modal{{ result['title'] }}" name="{{ result['volumeid'] }}"  type="button" value="Start" onclick="submitForm(name)">
+                                              </form>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+
+                      <p class="mt-2 grow text-stone-500 text-xs sm:text-sm ">{{ result['authors'] }}</p>
+                      <div class="mt-2 flex items-center text-xs sm:text-sm text-stone-500">
+                        <svg class="w-8 h-8 text-[#ad8a64] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                          <path d="M10.044,20.087A10.044,10.044,0,1,0,0,10.043,10.044,10.044,0,0,0,10.044,20.087ZM8.534,8.193l1.4-4.313,1.4,4.313h4.533L12.2,10.858l1.4,4.312L9.934,12.505,6.268,15.17l1.4-4.312L4,8.193Z"/>
+                        </svg>
+                        <p class="ms-2 font-bold text-stone-900">{{ result['rating'] }}</p>
+                        <p>&nbsp; | &nbsp;</p>
+                        <p>{{ result['ratingcnt'] }} reviews</p>
+                      </div>
+
+                      <!-- <p class="mt-2">{{ book }}</p> -->
+                    </div>            
+                    <div class="w-4/12 h-full">              
+                      <div class="flex flex-col w-full h-full">                
+                        <div class="flex-1">             
+                          <div class="w-full h-full relative">                    
+                            <!-- <img src="https://stackdiary.com/140x100.png" class="absolute top-0 w-full h-full object-cover object-center rounded-lg bg-white">          -->
+                            {% if result['imageLinks'] is not none %}
+                            <img class="absolute top-0 w-full h-full object-cover object-center bg-white" src="{{ result['imageLinks']['thumbnail'] }}" alt="Book image">
+                        {% else %}
+                            <img class="absolute top-0 w-full h-full object-cover object-center bg-white" src="{{ url_for('static', path='/images/no_cover.png') }}" alt="Book image">
+                        {% endif %}       
+                      </div>                
+                        </div>
+                      </div>   
+                    </div>          
+                  </div>          
+                  <div class="w-full py-2 flex flex-col justify-between">            
+                    <div>      
+                    </div> 
+                    <div class="w-full items-center sm:flex-1 grid gap-4 grid-cols-2 pt-6">
+                      <div class="flex items-end text-stone-700">
+                              
+                              <!-- <span class="ml-4"> -->
+                                <a class="flex items-end text-sm" href="/users/me/deletebook/{{ result['id'] }}">
+                                    <svg class="mr-2 w-5 h-5 sm:w-[1.7rem] sm:h-[1.7rem]" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 64 64"><path d="M 28 7 C 25.243 7 23 9.243 23 12 L 23 15 L 13 15 C 11.896 15 11 15.896 11 17 C 11 18.104 11.896 19 13 19 L 15.109375 19 L 16.792969 49.332031 C 16.970969 52.510031 19.600203 55 22.783203 55 L 41.216797 55 C 44.398797 55 47.029031 52.510031 47.207031 49.332031 L 48.890625 19 L 51 19 C 52.104 19 53 18.104 53 17 C 53 15.896 52.104 15 51 15 L 41 15 L 41 12 C 41 9.243 38.757 7 36 7 L 28 7 z M 28 11 L 36 11 C 36.552 11 37 11.449 37 12 L 37 15 L 27 15 L 27 12 C 27 11.449 27.448 11 28 11 z M 19.113281 19 L 44.886719 19 L 43.212891 49.109375 C 43.153891 50.169375 42.277797 51 41.216797 51 L 22.783203 51 C 21.723203 51 20.846109 50.170328 20.787109 49.111328 L 19.113281 19 z M 32 23.25 C 31.033 23.25 30.25 24.034 30.25 25 L 30.25 45 C 30.25 45.966 31.033 46.75 32 46.75 C 32.967 46.75 33.75 45.966 33.75 45 L 33.75 25 C 33.75 24.034 32.967 23.25 32 23.25 z M 24.642578 23.251953 C 23.677578 23.285953 22.922078 24.094547 22.955078 25.060547 L 23.652344 45.146484 C 23.685344 46.091484 24.462391 46.835938 25.400391 46.835938 C 25.421391 46.835938 25.441891 46.835938 25.462891 46.835938 C 26.427891 46.801938 27.183391 45.991391 27.150391 45.025391 L 26.453125 24.939453 C 26.419125 23.974453 25.606578 23.228953 24.642578 23.251953 z M 39.355469 23.251953 C 38.388469 23.224953 37.580875 23.974453 37.546875 24.939453 L 36.849609 45.025391 C 36.815609 45.991391 37.571109 46.801938 38.537109 46.835938 C 38.558109 46.836938 38.578609 46.835938 38.599609 46.835938 C 39.537609 46.835938 40.314656 46.091484 40.347656 45.146484 L 41.044922 25.060547 C 41.078922 24.094547 40.321469 23.285953 39.355469 23.251953 z"/></svg>
+                                    Delete</a>
+                              <!-- </span> -->
+                      </div>
+                    <a target="_blank" rel="noopener noreferrer" class=" text-end text-stone-900 hover:text-[rgb(214,125,62)] text-sm transition duration-150 ease-in-out" href="{{ result['previewLink'] }}">Read more
+                      <svg class="chev inline-block ml-1 w-2 h-2 stroke-2 stroke-current" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+                        <g fill-rule="evenodd"><path d="M1 1l4 4-4 4"></path></g>
+                      </svg>
+                      <svg class="arr hidden hover:inline-block ml-1 w-2 h-2 stroke-2 stroke-current" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+                        <g fill-rule="evenodd"><path d="M0 5h7"></path><path d="M4 1l4 4-4 4"></path></g>
+                      </svg>
+                  </a>                                                    
+                    </div>    
+                  </div>
+                </div>
+              </div>
+
+                {% endfor %}
+    </div>
+  </div>
+{% endif %}   
+</div>
+
+
 
 {% endblock %}

@@ -5,74 +5,212 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="{{url_for('static', path='/css/output.css')}}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lavishly+Yours&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Corinthia:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playball&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lexend+Peta:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poiret+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.7/dist/cdn.min.js"></script>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
+
+    <script>
+      document.addEventListener('DOMContentLoaded', (event) => {
+          document.getElementById("myForm").addEventListener("submit", function(e) {
+              e.preventDefault
+              submitForm(data);
+          });
+        }
+      )
+   </script>
+
+
 </head>
-<body class="bg-[url('../images/books_bg.jpg')] bg-cover">
+<!-- <body id="box" class="antialiased font-sans h-screen"> -->
+<!-- <body id="box" class="flex flex-col h-screen justify-between bg-[url('../images/paperboard.jpg')] bg-cover text-stone-200"> -->
+  <body id="box" class="flex flex-col min-h-screen justify-between bg-cover text-stone-900 font-railway">
+  <!-- NAV START -->
+<nav x-data="{ scroll: false }" @scroll.window="scroll = (window.pageYOffset >= 10) ? true : false" 
+  :class="{ 'bg-[rgb(173,138,100)] shadow-md': scroll, 'bg-transparent': !scroll }"
+  class="bg-transparent fixed w-full z-50 top-0 start-0" id="navbar">
 
-<!-- NAV BAR -->
-
-<nav class="bg-white dark:bg-gray-900 sticky w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
-    <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-    <a href="https://flowbite.com/" class="flex items-center space-x-3 rtl:space-x-reverse">
-        <img src="https://flowbite.com/docs/images/logo.svg" class="h-8" alt="Flowbite Logo">
-        <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Flowbite</span>
-    </a>
-    <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-        <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"><a href="/register">Sign Up</a></button>
-        <button data-collapse-toggle="navbar-sticky" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-sticky" aria-expanded="false">
-          <span class="sr-only">Open main menu</span>
-          <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
-          </svg>
-      </button>
-    </div>
-    <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-sticky">
-      <ul class="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-        <li>
-          <a href="/" class="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500" aria-current="page">Home</a>
-        </li>
-        <li>
-          <a href="/users/me/books" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">My Library</a>
-        </li>
-        <li>
-          <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Services</a>
-        </li>
-        <li>
-          {% if request.user.is_authenticated %}
-            <a href="/logout" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Logout</a>
-          {% else %}
-            <a href="/login" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Login</a>
-          {% endif %}
-        </li>
-      </ul>
-    </div>
-    </div>
-  </nav>
-  <!-- END NAV BAR -->
-
-  <!-- SEARCH  -->
-
-<div class="w-full max-w-xs">
-    <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 mt-2" method="post" action="/searchbook">
-      <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="title">Title</label>
-        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="title" name="title" type="text" placeholder="Title">
+  <div class="max-w-screen-2xl md:flex md:flex-wrap items-center justify-between mx-auto p-2 z-50">
+      <a class="flex">
+                <svg class="h-[35px] w-[35px] lg:h-[50px] lg:w-[50px]" version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512"  xml:space="preserve">
+                  <style type="text/css">.st1{fill:rgb(28, 25, 23) ;}</style>
+                <g>
+                  <path class="st1" d="M94.972,55.756H30.479C13.646,55.756,0,69.407,0,86.243v342.279c0,16.837,13.646,30.47,30.479,30.47h64.493
+                    c16.833,0,30.479-13.634,30.479-30.47V86.243C125.452,69.407,111.805,55.756,94.972,55.756z M98.569,234.237H26.882v-17.922h71.687
+                    V234.237z M98.569,180.471H26.882v-35.843h71.687V180.471z"/>
+                  <path class="st1" d="M238.346,55.756h-64.493c-16.833,0-30.479,13.651-30.479,30.487v342.279c0,16.837,13.646,30.47,30.479,30.47
+                    h64.493c16.833,0,30.479-13.634,30.479-30.47V86.243C268.825,69.407,255.178,55.756,238.346,55.756z M241.942,234.237h-71.687
+                    v-17.922h71.687V234.237z M241.942,180.471h-71.687v-35.843h71.687V180.471z"/>
+                  <path class="st1" d="M510.409,398.305L401.562,73.799c-5.352-15.961-22.63-24.554-38.587-19.208l-61.146,20.512
+                    c-15.961,5.356-24.559,22.63-19.204,38.592L391.472,438.2c5.356,15.962,22.63,24.555,38.587,19.208l61.146-20.512
+                    C507.166,431.541,515.763,414.267,510.409,398.305z M326.677,160.493l67.967-22.796l11.398,33.988l-67.968,22.796L326.677,160.493z
+                      M355.173,245.455l-5.701-16.994l67.968-22.796l5.696,16.994L355.173,245.455z"/>
+                </g>
+                </svg>
+            <!-- <span class="text-stone-900 ml-2 lg:ml-6 self-center text-2xl sm:text-3xl lg:text-5xl font-thin whitespace-nowrap">Book<span class="font-bold text-[rgb(130,103,84)]">API</span>app</span> -->
+            <span class="text-stone-900 ml-2 lg:ml-6 self-center text-sm font-bold uppercase tracking-wide whitespace-nowrap">Book<span class="font-bold text-[rgb(130,103,84)]">API</span>app</span>
+          </a>
+        <div class="block font-light justify-end md:flex relative min-[340px]:absolute min-[340px]:w-full min-[340px]:right-2 min-[340px]:top-2 md:top-0 md:relative md:w-auto">
+              <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse justify-end">
+                  <!-- <button type="button" class=" bg-[rgb(130,103,84)] hover:bg-[#bb8c5a] focus:ring-4 focus:outline-none focus:ring-[#9c754c] rounded-lg ml-2 px-4 py-2 font-semibold text-center text-sm xl:text-base"><a href="/register">SIGN UP</a></button> -->
+                  <button type="button" class="focus:ring-4 focus:outline-none focus:ring-[#9c754c] ml-2 p-3 px-6 uppercase text-center font-bold border-solid border-8 border-[rgb(130,103,84)] text-stone-900 hover:text-[rgb(123,75,41)] text-xs transition duration-150 ease-in-out"><a href="/register">SIGN UP</a></button>
+                  <button data-collapse-toggle="navbar-sticky" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-stone-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 " aria-controls="navbar-sticky" aria-expanded="false">
+                    <span class="sr-only">Open main menu</span>
+                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
+                    </svg>
+                </button>
+              </div>
+              <div class="items-center justify-self-auto hidden text-sm xl:text-base w-full md:flex md:w-auto md:order-1" id="navbar-sticky">
+                <!-- <ul class="flex flex-col font-semibold p-4 md:p-0 md:mr-8 bg-[rgb(130,103,84)] md:bg-transparent md:space-x-8 rtl:space-x-reverse md:flex-row mt-1 md:mt-0">
+                  <li>
+                    <a href="/" class="[text-shadow:_1px_1px_0px_rgb(173_138_100_/_1)] block py-2 px-3 rounded md:bg-transparent hover:text-[rgb(123,75,41)] md:p-0" aria-current="page">HOME</a>
+                  </li>
+                  <li>
+                    <a href="/users/me/books" class="[text-shadow:_1px_1px_0px_rgb(173_138_100_/_1)] block py-2 px-3 rounded hover:text-[rgb(123,75,41)] md:p-0">MYLIBRARY</a>
+                  </li>
+                  <li>
+                    {% if request.user.is_authenticated %}
+                    <a href="/logout" class="[text-shadow:_1px_1px_0px_rgb(173_138_100_/_1)] block py-2 px-3 rounded hover:text-[rgb(123,75,41)] md:p-0">LOGOUT</a>
+                    {% else %}
+                    <a href="/login" class="[text-shadow:_1px_1px_0px_rgb(173_138_100_/_1)] block py-2 px-3 rounded hover:text-[rgb(123,75,41)] md:p-0">LOGIN</a>
+                    {% endif %}
+                  </li>
+                </ul> -->
+                <ul class=" text-stone-900 flex flex-col p-4 md:p-0 md:mr-8 bg-[rgb(130,103,84)] md:bg-transparent md:space-x-8 rtl:space-x-reverse md:flex-row mt-1 md:mt-0">
+                  <li>
+                    <a href="/" class="text-xs font-bold uppercase block py-2 px-3 rounded md:bg-transparent hover:text-[rgb(123,75,41)] md:p-0" aria-current="page">HOME</a>
+                  </li>
+                  <li>
+                    <a href="/users/me/books" class="text-xs font-bold uppercase block py-2 px-3 rounded hover:text-[rgb(123,75,41)] md:p-0">MYLIBRARY</a>
+                  </li>
+                  <li>
+                    {% if request.user.is_authenticated %}
+                    <a href="/logout" class="text-xs font-bold uppercase block py-2 px-3 rounded hover:text-[rgb(123,75,41)] md:p-0">LOGOUT</a>
+                    {% else %}
+                    <a href="/login" class="text-xs font-bold uppercase block py-2 px-3 rounded hover:text-[rgb(123,75,41)] md:p-0">LOGIN</a>
+                    {% endif %}
+                  </li>
+                </ul>
+              </div>
       </div>
-      <div class="mb-6">
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="author">Author</label>
-        <input class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="author" name="author" type="text" placeholder="Author">
-      </div>
-      <div class="flex items-center justify-between">
-        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">Search</button>
-      </div>
-    </form>
-    <p class="text-center text-gray-500 text-xs">&copy;2020 Acme Corp. All rights reserved.</p>
-</div>
 
-<!-- END SEARCH -->
+  </div>
+</nav>
 
-    {% block content %}
-    {% endblock %}
+<!-- NAV END -->
+
+<main id="mainid" class="flex flex-1 flex-col mb-auto h-auto justify-center items-center bg-transparent">
+<!-- MESSAGE ALERT -->
+{% if msg %}
+<!-- <div class="flex inline-flex justify-between bg-teal-100 border border-teal-400 text-teal-700 px-4 py-3 my-2 rounded " -->
+  <div class="flex w-full justify-center">
+    <div class="fixed top-20 z-100 flex justify-between w-[50%] {% if 'ERR_' in msg %} bg-red-100 border border-red-400 text-red-700 {% elif 'INF_' in msg %} bg-blue-100 border border-blue-400 text-blue-700 {% else %} bg-teal-100 border border-teal-400 text-teal-700 {% endif %} px-4 py-3 my-2 rounded "
+      role="alert">
+              <span class="block sm:inline pl-2">
+                  <!-- <strong class="font-bold">Success</strong> -->
+                  {{ msg[4:] }}
+              </span>
+              <span class="inline" onclick="return this.parentNode.remove();">
+                  <svg class="fill-current h-6 w-6" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                      <title>Close</title>
+                      <path
+                          d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" />
+                  </svg>
+              </span>
+    </div>
+  </div>  
+{% endif %}
+<!-- END MESSAGE ALERT -->
+
+{% block content %}
+
+  {% endblock %}
+</main>
+
+<!--FOOTER  -->
+  <footer class="text-center bg-[#363537] text-stone-200 flex flex-col px-4 py-12 sm:text-left lg:px-16 md:px-8 xl:px-24 xxl:px-40">
+    <div class="sm:flex flex-wrap">
+      <div class="sm:w-1/2 lg:w-1/5">
+        <h6 class="text-sm  font-bold uppercase">Github</h6>
+
+        <div class="mt-4">
+          <a href="www.github.com/justkacz" class="block text-md ">My account</a>
+          <a href="#" class="block text-md  mt-2">Project code</a>
+        </div>
+      </div>
+
+      <!-- <div class="mt-8 sm:w-1/2 sm:mt-0 lg:w-1/5 lg:mt-0">
+        <h6 class="text-sm  font-bold uppercase">Contact</h6>
+        <ul class="mt-4">
+          <li><p href="#">contact@contact.com</p></li>
+          <li class="mt-2"><a href="#">Careers</a></li>
+        </ul>
+      </div> -->
+
+      <div class="mt-8 sm:w-1/2 sm:mt-0 lg:w-1/5">
+        <h6 class="text-sm  font-bold uppercase">API Links</h6>
+        <ul class="mt-4">
+          <li><a href="#">Google API Books</a></li>
+          <li class="mt-2"><a href="#">New York Times</a></li>
+          <!-- <li class="mt-2"><a href="#">Terms of Use</a></li>
+          <li class="mt-2"><a href="#">Disclosures & Licensing</a></li> -->
+        </ul>
+      </div>
+
+      <div class="px-4 sm:px-8 md:px-10 mt-12 sm:w-full lg:w-[60%] lg:mt-0 lg:pl-12">
+        <div class="flex items-center justify-center lg:justify-start">
+          <!-- <svg xmlns="http://www.w3.org/2000/svg" width="188" height="39" viewBox="0 0 188 39" class="mx-auto sm:mx-0">
+            <g transform="translate(-193 -27)"><text transform="translate(280 56)" fill="#454f5b" font-size="24"
+                font-family="ArialRoundedMTBold, Arial Rounded MT">
+                <tspan x="0" y="0">FairRate</tspan>
+              </text>
+              <g transform="translate(193 27)">
+                <path d="M54,33H0L27,0,54,33ZM23,16V27h8V16H23Z" transform="translate(0 6)" fill="#4ad5f6" />
+                <path d="M14,0,0,16H27L14,0" transform="translate(40)" fill="#95cdb1" />
+                <path d="M14,0,0,16H27L14,0" transform="translate(55 18)" fill="#ffc48b" />
+              </g>
+            </g>
+          </svg> -->
+          <svg height="60px" width="60px" version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512"  xml:space="preserve">
+            <style type="text/css">.st0{fill:rgb(231 229 228) ;}</style>
+            <g>
+              <path class="st0" d="M94.972,55.756H30.479C13.646,55.756,0,69.407,0,86.243v342.279c0,16.837,13.646,30.47,30.479,30.47h64.493
+                c16.833,0,30.479-13.634,30.479-30.47V86.243C125.452,69.407,111.805,55.756,94.972,55.756z M98.569,234.237H26.882v-17.922h71.687
+                V234.237z M98.569,180.471H26.882v-35.843h71.687V180.471z"/>
+              <path class="st0" d="M238.346,55.756h-64.493c-16.833,0-30.479,13.651-30.479,30.487v342.279c0,16.837,13.646,30.47,30.479,30.47
+                h64.493c16.833,0,30.479-13.634,30.479-30.47V86.243C268.825,69.407,255.178,55.756,238.346,55.756z M241.942,234.237h-71.687
+                v-17.922h71.687V234.237z M241.942,180.471h-71.687v-35.843h71.687V180.471z"/>
+              <path class="st0" d="M510.409,398.305L401.562,73.799c-5.352-15.961-22.63-24.554-38.587-19.208l-61.146,20.512
+                c-15.961,5.356-24.559,22.63-19.204,38.592L391.472,438.2c5.356,15.962,22.63,24.555,38.587,19.208l61.146-20.512
+                C507.166,431.541,515.763,414.267,510.409,398.305z M326.677,160.493l67.967-22.796l11.398,33.988l-67.968,22.796L326.677,160.493z
+                  M355.173,245.455l-5.701-16.994l67.968-22.796l5.696,16.994L355.173,245.455z"/>
+            </g>
+            </svg>
+            <p class="text-2xl ml-4">BookAPIapp</p>
+        </div>
+
+        <p class="text-base  mt-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur aspernatur tenetur sed totam ratione, dolor ut culpa perferendis hic molestiae quisquam atque sit minima? Facilis pariatur veniam illo quia voluptas?</p>
+      </div>
+    </div>
+
+    <div class="mt-12">
+      <!-- <p class="text-sm ">© 2025, Inc. All rights reserved.</p> -->
+    </div>
+  </footer>
+<!-- FOOTER END -->
+
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/flowbite.min.js"></script> -->
+<script src="/static/css/flowbite.min.js"></script>
 
 </body>
 </html>

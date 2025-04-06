@@ -31,29 +31,32 @@ class TokenData(BaseModel):
     email: Optional[str] = None
 
 
-class BaseBook(BaseModel):
-    # id: str = Field(default_factory=uuid.uuid4, alias='_id')
-    title: str = Field(...)
-    author: str = Field(...)
-    description: Optional[str] = None
-    # createdon: datetime = datetime.now()
+# class BaseBook(BaseModel):
+#     # id: str = Field(default_factory=uuid.uuid4, alias='_id')
+#     title: str = Field(...)
+#     author: str = Field(...)
+#     description: Optional[str] = None
+#     # createdon: datetime = datetime.now()
 
-    class Config:
-        allow_population_by_field_name = True
-        schema_extra = {
-            "example": {
-                # "_id": "06gh679-f34b-8b26-147g-665f26g0765ij45k",
-                "title": "Sample Title",
-                "author": "Sample Author",
-                "description": "Sample Description",
-            }
-        }
+#     class Config:
+#         allow_population_by_field_name = True
+#         schema_extra = {
+#             "example": {
+#                 # "_id": "06gh679-f34b-8b26-147g-665f26g0765ij45k",
+#                 "title": "Sample Title",
+#                 "author": "Sample Author",
+#                 "description": "Sample Description",
+#             }
+#         }
+
+class BaseBook(BaseModel):
+    volumeid: str = Field(...)
 
 
 class BookSchema(BaseBook):
     # id: str = Field(default_factory=uuid.uuid4, alias='_id')
     username: str = Field(...)
-    createdon: datetime = datetime.now()
+    createdon: datetime = Field(...)
 
 
 class BookUpdate(BaseModel):

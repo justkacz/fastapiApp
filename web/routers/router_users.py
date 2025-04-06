@@ -74,18 +74,10 @@ def register(request: Request, msg: str = None):
 async def register(request: Request, email: str = Form(...), password: str = Form(...)):
     email_exist = await get_user(email)
     if email_exist:
-            # raise HTTPException(status_code=403, 
-            #                     detail="INF_The user with this email already exists.",
-            #                     headers = {"Location": "register"})
-            raise RedirectException(status_code=403, 
+        raise RedirectException(status_code=403, 
                                     detail="INF_The user with this email already exists.",
                                     loc = "/register")
-    # try:     
     user = RegisterUser(email=email, password=password)
-    # except ValidationError as e:
-    #     raise RedirectException(status_code=403, 
-    #                                 detail="INF_Password must have at least 4 characters.",
-    #                                 loc = "/register")
     user = jsonable_encoder(user)
     new_user = await register_user(user_data=user)
     new_user = UserInDB(email=new_user["email"], hashed_password=new_user["password"])
