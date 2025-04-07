@@ -3,10 +3,10 @@
 
 
 
-<section class="w-[85%] min-w-[280px] text-stone-800 pt-[6.5rem] pb-10">
-	<div class="grid grid-cols-12 mx-auto gap-y-6 md:gap-4 xl:gap-6">
+<section class="w-[80%] min-w-[280px] text-stone-800 pt-[6.5rem] pb-10">
+	<div class="grid grid-cols-12 mx-auto gap-y-6 md:gap-4 xl:gap-12">
 
-		<div class="relative flex flex-col justify-between col-span-12 shadow-[inset_0_0px_90px_rgba(0,0,0,0.9)] bg-cover md:col-span-8 lg:col-span-9 xl:col-span-9 min-h-96 bg-fixed bg-[url('../images/b12.jpg')]" >
+		<div class="relative flex flex-col justify-between col-span-12 shadow-[inset_0_5px_0px_rgba(0,0,0,0.1)] bg-cover md:col-span-8 lg:col-span-9 xl:col-span-9 min-h-96 bg-[url('../images/b22.jpg')]" >
 			<!-- <span class="absolute px-1 pb-2 text-sm font-bold text-stone-200 uppercase border-b-2 left-6 top-6">Serach Book</span> -->
       
 
@@ -14,18 +14,18 @@
         <p class="px-1 pb-2 text-[0.9rem] font-bold text-stone-200 uppercase left-6 top-6">Serach Book</p>
         <label for="title" class="mb-2 lg:text-sm  sr-only">Title</label>
         <div class="relative">
-            <input type="search" id="title" name="title" class="border-none bg-opacity-70 bg-stone-200 block w-full p-2 ps-5 text-sm lg:text-base text-stone-900 focus:ring-yellow-500 focus:border-yellow-500"/>
+            <input type="search" id="title" name="title" class="border-none bg-opacity-50 rounded-sm bg-stone-200 block w-full p-2 ps-5 text-sm lg:text-base text-stone-900 focus:ring-yellow-500 focus:border-yellow-500"/>
             <div class="w-1/5  shadow-xl absolute end-2.5 bottom-[0.1rem] text-sm flex justify-center px-4 py-2">TITLE</div>
         </div>
         <label for="author" class="mb-2 text-sm sr-only">Author</label>
         <div class="relative">
-            <input type="search" id="author" name="author" class="border-none bg-opacity-70 bg-stone-200 block w-full p-2 ps-5 text-sm lg:text-base text-stone-900 focus:ring-yellow-500 focus:border-yellow-500"/>
+            <input type="search" id="author" name="author" class="border-none bg-opacity-50 rounded-sm bg-stone-200 block w-full p-2 ps-5 text-sm lg:text-base text-stone-900 focus:ring-yellow-500 focus:border-yellow-500"/>
             <div class="w-1/5 absolute shadow-xl end-2.5 bottom-[0.1rem]  flex justify-center text-sm  px-4 py-2">AUTHOR</div>
         </div>
       
         <label for="subject" class="mb-2 text-sm sr-only">Subject</label>
         <div class="relative">
-            <input type="search" id="subject" name="subject" class="border-none bg-opacity-70 bg-stone-200 block w-full p-2 ps-5 text-sm lg:text-base text-stone-900 focus:ring-yellow-500 focus:border-yellow-500"/>
+            <input type="search" id="subject" name="subject" class="border-none bg-opacity-50 rounded-sm bg-stone-200 block w-full p-2 ps-5 text-sm lg:text-base text-stone-900 focus:ring-yellow-500 focus:border-yellow-500"/>
             <div class="w-1/5 absolute shadow-xl end-2.5 bottom-[0.1rem] flex justify-center text-sm px-4 py-2">SUBJECT</div>
         </div>
       
@@ -47,38 +47,41 @@
 				</span>
 				<h1 class="font-serif text-2xl font-semibold">"If you don't like to read, you haven't found the right book."</h1>
 			</div> -->
-      <section class=" text-stone-200 w-full flex flex-col items-center justify-end px-4 py-12 lg:px-16 md:px-8 xl:px-24 xxl:px-40">
+      <section class=" text-stone-800 w-full flex flex-col items-center justify-end px-4 py-12 lg:px-16 md:px-8 xl:px-24 xxl:px-40">
         <span class="font-bold mb-4">J.K. Rowling</span>
         <h1 class="text-center font-serif text-[1.75rem] font-semibold group-hover:underline">"If you don't like to read, you haven't found the right book."</h1>
       </section>
 		</div>
-		<div class="p-2 col-span-12 md:col-span-4 lg:col-span-3 xl:col-span-3 lg:block shadow-lg bg-[rgba(219,219,219,0.32)]">
-			<div class="mb-3 space-x-5 border-b-2 border-opacity-10 ">
-				<button type="button" class="pb-3 text-xs font-bold uppercase">Recently added</button>
+		<div class="p-2 col-span-12 md:col-span-4 lg:col-span-3 xl:col-span-3 lg:block lg:mr-1 xl:mr-16">
+			<div class="mb-3 space-x-5 border-b-2 border-opacity-10">
+				<p type="button" class="pb-3 text-xs font-bold uppercase">Recently added</p>
 				<!-- <button type="button" class="pb-5 text-xs font-bold uppercase border-b-2 dark:border- dark:text-gray-600">Popular</button> -->
 			</div>
 			<!-- <div class="flex flex-col divide-y"> -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 px-1 py-3 lg:pr-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 px-1">
         {% for book in books_db %}
-				<div class="flex px-1 py-3">
+				<div class="flex px-1 py-2">
           {% if book['imageLinks'] is not none %}
-					<img alt="" class="flex-shrink-0 object-cover w-20 h-28 mr-4 dark:bg-gray-500" src="{{ book['imageLinks']['thumbnail'] }}">
+					<img alt="" class="flex-shrink-0 object-cover sepia-[0.4] w-20 h-32 mr-4 dark:bg-gray-500" src="{{ book['imageLinks']['thumbnail'] }}">
           {% else %}
-          <img alt="" class="flex-shrink-0 object-cover w-20 h-28 mr-4 dark:bg-gray-500" src="{{ url_for('static', path='/images/no_cover.png') }}">
+          <img alt="" class="flex-shrink-0 object-cover sepia-[0.4] w-20 h-32 mr-4 dark:bg-gray-500" src="{{ url_for('static', path='/images/no_cover.png') }}">
           {% endif %}  
-					<div class="flex flex-col flex-grow">
+					<div class="flex flex-col">
 						<a rel="noopener noreferrer" href="#" class="text-stone-700 font-semibold">{{ book['title'] }}</a>
-            <p class="text-stone-700  mt-auto text-sm">{{ book['authors'] }}</p>
-						<p class="text-stone-700  mt-auto text-xs">
-              {% if book['datediff'] == 0 %}
-              <span class="">Today</span>
-              {% elif book['datediff'] == 1 %}
-              <span class="">Yesterday</span>
-              {% else %}
-              <span class="">{{ book['datediff'] }} days ago</span>
-              {% endif %}
-							<a rel="noopener noreferrer" href="#" class="block dark:text-blue-600 lg:ml-2 lg:inline hover:underline">{{ book['category'] }}</a>
-						</p>
+            <div class="flex flex-col flex-grow justify-evenly">
+                <p class="text-stone-700  mt-auto text-sm">{{ book['authors'] }}</p>
+                <p class="text-stone-700  mt-auto text-xs">
+                  {% if book['datediff'] == 0 %}
+                  <span class="">Today</span>
+                  {% elif book['datediff'] == 1 %}
+                  <span class="">Yesterday</span>
+                  {% else %}
+                  <span class="">{{ book['datediff'] }} days ago</span>
+                  {% endif %}
+                  <a rel="noopener noreferrer" href="#" class="block dark:text-blue-600 lg:ml-2 lg:inline hover:underline">{{ book['category'] }}</a>
+                </p>
+            </div>
+
 					</div>
 				</div>
         {% endfor %}
@@ -93,7 +96,7 @@
  
   <!-- NEW YORK TIMES --> 
     <!-- <section class="bg-[rgb(248,242,238)] text-stone-700 w-full h-full flex flex-col py-12 px-4 text-center lg:px-16 md:px-8 xl:px-24 xxl:px-40 "> -->
-<div class="grid grid-rows-[15px_15px] w-[85%] mt-2">
+<div class="grid grid-rows-[15px_15px] w-[80%] mt-2">
   <div class="col-start-1 row-span-12 row-start-1 w-full bg-[rgba(219,219,219,0.32)] "></div>
   <div class="col-start-1 row-span-10 row-start-2 w-full bg-[rgba(219,219,219,0.67)] flex items-center">
         <!-- <h2 class="text-xl font-bold text-stone-200 bg-white lg:text-3xl mt-1">TOP {{ list_len }} New York Times Bestsellers</h2> -->
@@ -102,11 +105,11 @@
     <section class="p-1 sm:p-4 justify-center items-center text-stone-700 flex flex-col w-full">
 
       <!-- <h2 class="px-2 text-base sm:text-xl font-bold lg:text-xl mt-1">~ TOP {{ list_len }} New York Times Bestsellers ~</h2> -->
-      <h2 class="px-2 pb-8 text-xs font-black uppercase mt-1 text-stone-900"> TOP {{ list_len }} New York Times Bestsellers </h2>
+      <h2 class="px-2 pb-8 text-sm font-black uppercase mt-1 text-stone-900"> TOP {{ list_len }} New York Times Bestsellers </h2>
       <div class="lg:flex w-full first-line pb-8">
 
   
-        <div class="pl-2 pr-2 lg:pr-5 xl:pr-20 sm:px-10 lg:w-1/3 lg:text-left lg:border-r-2 lg:border-stone-50">
+        <div class="pl-2 pr-2 lg:pr-5 xl:pr-20 sm:px-10 lg:w-1/3 lg:text-left lg:border-r-2 sm:pt-7 lg:border-stone-50">
           <h4 class="font-semibold text-stone-900">Stop Looking</h4>
           <p class="text-sm sm:text-base lg:text-sm xl:text-base mt-2">Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Praesent commodo cursus magna.</p>
   
