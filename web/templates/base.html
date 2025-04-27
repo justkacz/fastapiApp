@@ -16,6 +16,8 @@
     <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poiret+One&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Estonia&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Over+the+Rainbow&display=swap" rel="stylesheet">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.7/dist/cdn.min.js"></script>
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
 
@@ -33,13 +35,13 @@
 </head>
 <!-- <body id="box" class="antialiased font-sans h-screen"> -->
 <!-- <body id="box" class="flex flex-col h-screen justify-between bg-[url('../images/paperboard.jpg')] bg-cover text-stone-200"> -->
-  <body id="box" class="flex flex-col min-h-screen justify-between bg-cover text-stone-900 font-railway">
+  <body id="box" class="flex flex-col min-h-screen justify-between text-stone-900 font-railway">
   <!-- NAV START -->
 <nav x-data="{ scroll: false }" @scroll.window="scroll = (window.pageYOffset >= 10) ? true : false" 
   :class="{ 'bg-[rgb(173,138,100)] shadow-md': scroll, 'bg-transparent': !scroll }"
-  class="bg-transparent fixed w-full z-50 top-0 start-0" id="navbar">
+  class="px-2 py-4 bg-transparent fixed w-full z-50 top-0 start-0" id="navbar">
 
-  <div class="max-w-screen-2xl md:flex md:flex-wrap items-center justify-between mx-auto p-2 z-50">
+  <div class="max-w-screen-2xl md:flex md:flex-wrap items-center justify-between mx-auto z-50">
       <a class="flex">
                 <svg class="h-[35px] w-[35px] lg:h-[50px] lg:w-[50px]" version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512"  xml:space="preserve">
                   <style type="text/css">.st1{fill:rgb(28, 25, 23) ;}</style>
@@ -57,12 +59,12 @@
                 </g>
                 </svg>
             <!-- <span class="text-stone-900 ml-2 lg:ml-6 self-center text-2xl sm:text-3xl lg:text-5xl font-thin whitespace-nowrap">Book<span class="font-bold text-[rgb(130,103,84)]">API</span>app</span> -->
-            <span class="text-stone-900 ml-2 lg:ml-6 self-center text-3xl font-bold tracking-wide whitespace-nowrap font-dynalight">Book<span class="font-bold text-[rgb(130,103,84)]">API</span>app</span>
+            <span class="text-stone-900 ml-2 lg:ml-6 self-center text-xl sm:text-4xl font-bold tracking-wide whitespace-nowrap font-revol">Book<span class="font-bold text-[rgb(130,103,84)]">API</span>app</span>
           </a>
-        <div class="block font-light justify-end md:flex relative min-[340px]:absolute min-[340px]:w-full min-[340px]:right-2 min-[340px]:top-2 md:top-0 md:relative md:w-auto">
+        <div class="block font-light justify-end md:flex relative min-[340px]:absolute min-[340px]:w-full min-[340px]:top-2 md:top-0 md:relative md:w-auto">
               <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse justify-end">
-                  <!-- <button type="button" class=" bg-[rgb(130,103,84)] hover:bg-[#bb8c5a] focus:ring-4 focus:outline-none focus:ring-[#9c754c] rounded-lg ml-2 px-4 py-2 font-semibold text-center text-sm xl:text-base"><a href="/register">SIGN UP</a></button> -->
-                  <button type="button" class="focus:ring-4 focus:outline-none focus:ring-[#9c754c] ml-2 p-3 px-6 uppercase text-center font-bold border-solid border-8 border-[rgb(130,103,84)] text-stone-900 hover:text-[rgb(123,75,41)] text-xs transition duration-150 ease-in-out"><a href="/register">SIGN UP</a></button>
+                  <!-- <button type="button" class=" bg-[rgb(130,103,84)] hover:bg-[rgb(173,138,100)]focus:ring-4 focus:outline-none focus:ring-[#9c754c] rounded-lg ml-2 px-4 py-2 font-semibold text-center text-sm xl:text-base"><a href="/register">SIGN UP</a></button> -->
+                  <button type="button" class="focus:ring-4 focus:outline-none focus:ring-[#9c754c] ml-2 min-[768px]:mx-2 p-1 px-5 text-center border-solid border-8 border-[rgb(173,138,100)] text-stone-900 hover:text-[rgb(123,75,41)] transition duration-150 ease-in-out"><a href="/register">SignUp</a></button>
                   <button data-collapse-toggle="navbar-sticky" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-stone-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 " aria-controls="navbar-sticky" aria-expanded="false">
                     <span class="sr-only">Open main menu</span>
                     <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
@@ -71,33 +73,18 @@
                 </button>
               </div>
               <div class="items-center justify-self-auto hidden text-sm xl:text-base w-full md:flex md:w-auto md:order-1" id="navbar-sticky">
-                <!-- <ul class="flex flex-col font-semibold p-4 md:p-0 md:mr-8 bg-[rgb(130,103,84)] md:bg-transparent md:space-x-8 rtl:space-x-reverse md:flex-row mt-1 md:mt-0">
+                <ul class=" text-stone-900 flex flex-col p-4 md:p-0 md:mr-8 bg-[rgb(173,138,100)] md:bg-transparent md:space-x-8 rtl:space-x-reverse md:flex-row mt-1 md:mt-0">
                   <li>
-                    <a href="/" class="[text-shadow:_1px_1px_0px_rgb(173_138_100_/_1)] block py-2 px-3 rounded md:bg-transparent hover:text-[rgb(123,75,41)] md:p-0" aria-current="page">HOME</a>
+                    <a href="/" class=" block py-2 px-3 rounded md:bg-transparent hover:text-[rgb(123,75,41)] md:p-0" aria-current="page">Home</a>
                   </li>
                   <li>
-                    <a href="/users/me/books" class="[text-shadow:_1px_1px_0px_rgb(173_138_100_/_1)] block py-2 px-3 rounded hover:text-[rgb(123,75,41)] md:p-0">MYLIBRARY</a>
-                  </li>
-                  <li>
-                    {% if request.user.is_authenticated %}
-                    <a href="/logout" class="[text-shadow:_1px_1px_0px_rgb(173_138_100_/_1)] block py-2 px-3 rounded hover:text-[rgb(123,75,41)] md:p-0">LOGOUT</a>
-                    {% else %}
-                    <a href="/login" class="[text-shadow:_1px_1px_0px_rgb(173_138_100_/_1)] block py-2 px-3 rounded hover:text-[rgb(123,75,41)] md:p-0">LOGIN</a>
-                    {% endif %}
-                  </li>
-                </ul> -->
-                <ul class=" text-stone-900 flex flex-col p-4 md:p-0 md:mr-8 bg-[rgb(130,103,84)] md:bg-transparent md:space-x-8 rtl:space-x-reverse md:flex-row mt-1 md:mt-0">
-                  <li>
-                    <a href="/" class="text-xs font-bold uppercase block py-2 px-3 rounded md:bg-transparent hover:text-[rgb(123,75,41)] md:p-0" aria-current="page">HOME</a>
-                  </li>
-                  <li>
-                    <a href="/users/me/books" class="text-xs font-bold uppercase block py-2 px-3 rounded hover:text-[rgb(123,75,41)] md:p-0">MYLIBRARY</a>
+                    <a href="/users/me/books" class=" block py-2 px-3 rounded hover:text-[rgb(123,75,41)] md:p-0">MyLibrary</a>
                   </li>
                   <li>
                     {% if request.user.is_authenticated %}
-                    <a href="/logout" class="text-xs font-bold uppercase block py-2 px-3 rounded hover:text-[rgb(123,75,41)] md:p-0">LOGOUT</a>
+                    <a href="/logout" class=" block py-2 px-3 rounded hover:text-[rgb(123,75,41)] md:p-0">LogOut</a>
                     {% else %}
-                    <a href="/login" class="text-xs font-bold uppercase block py-2 px-3 rounded hover:text-[rgb(123,75,41)] md:p-0">LOGIN</a>
+                    <a href="/login" class=" block py-2 px-3 rounded hover:text-[rgb(123,75,41)] md:p-0">LogIn</a>
                     {% endif %}
                   </li>
                 </ul>
@@ -109,12 +96,12 @@
 
 <!-- NAV END -->
 
-<main id="mainid" class="flex flex-1 flex-col mb-auto h-auto justify-center items-center bg-transparent">
+<main id="mainid" class="flex flex-1 flex-col mb-auto h-auto items-center bg-transparent">
 <!-- MESSAGE ALERT -->
 {% if msg %}
 <!-- <div class="flex inline-flex justify-between bg-teal-100 border border-teal-400 text-teal-700 px-4 py-3 my-2 rounded " -->
-  <div class="flex w-full justify-center">
-    <div class="fixed top-20 z-100 flex justify-between w-[50%] {% if 'ERR_' in msg %} bg-red-100 border border-red-400 text-red-700 {% elif 'INF_' in msg %} bg-blue-100 border border-blue-400 text-blue-700 {% else %} bg-teal-100 border border-teal-400 text-teal-700 {% endif %} px-4 py-3 my-2 rounded "
+ <!-- <div class="relative w-full"> -->
+    <div class="fixed top-20 z-50 flex justify-between w-[50%] {% if 'ERR_' in msg %} bg-red-100 border border-red-400 text-red-700 {% elif 'INF_' in msg %} bg-blue-100 border border-blue-400 text-blue-700 {% else %} bg-teal-100 border border-teal-400 text-teal-700 {% endif %} px-4 py-3 my-2 rounded "
       role="alert">
               <span class="block sm:inline pl-2">
                   <!-- <strong class="font-bold">Success</strong> -->
@@ -128,7 +115,7 @@
                   </svg>
               </span>
     </div>
-  </div>  
+  <!-- </div> -->
 {% endif %}
 <!-- END MESSAGE ALERT -->
 

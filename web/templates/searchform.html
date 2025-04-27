@@ -1,56 +1,14 @@
 
 
-<form class="w-full font-light grid gap-2" method="post" action="/searchbook">
-  <!-- <div class="mb-1 flex items-center justify-evenly">
-      <label for="title" class="w-32 text-right pr-4 text-stone-700">Title</label>
-      <input class="rounded-3xl border-none bg-yellow-400 bg-opacity-50 px-6 py-2 text-center text-inherit placeholder-slate-200 shadow-lg outline-none backdrop-blur-md" id="title" name="title"/>
-  </div> -->
-  <label for="title" class="mb-2 lg:text-sm  sr-only">Title</label>
-  <div class="relative">
-      <!-- <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-          <svg class="w-4 h-4 text-stone-500 dark:text-stone-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-          </svg>
-      </div> -->
-      <input type="search" id="title" name="title" class="border-none rounded-3xl bg-opacity-70 block w-full p-4 ps-10 text-sm lg:text-base text-stone-900 bg-stone-400 focus:ring-yellow-500 focus:border-yellow-500"/>
-      <div class="w-1/5 rounded-3xl absolute end-2.5 bottom-2.5 bg-[rgb(130,103,84)] text-[0.6rem] sm:text-sm xl:text-base flex justify-center px-4 py-2">TITLE</div>
-  </div>
-
-  <!-- <div class="mb-1 flex items-center justify-evenly">
-    <label for="author" class="w-32 text-right pr-4 text-stone-700">Author</label>
-    <input class="rounded-3xl border-none bg-yellow-400 bg-opacity-50 px-6 py-2 text-center text-inherit placeholder-slate-200 shadow-lg outline-none backdrop-blur-md" id="author" name="author"/>
-  </div> -->
-  <label for="author" class="mb-2 text-sm sr-only">Author</label>
-  <div class="relative">
-      <!-- <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-          <svg class="w-4 h-4 text-stone-500 dark:text-stone-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-          </svg>
-      </div> -->
-      <input type="search" id="author" name="author" class="border-none rounded-3xl bg-opacity-70 block w-full p-4 ps-10 text-sm lg:text-base text-stone-900 bg-stone-400 focus:ring-yellow-500 focus:border-yellow-500"/>
-      <div class="w-1/5 rounded-3xl absolute end-2.5 bottom-2.5 bg-[rgb(130,103,84)] flex justify-center text-[0.6rem] sm:text-sm xl:text-base  px-4 py-2">AUTHOR</div>
-  </div>
-
-
-
-  <!-- <div class="mb-1 flex items-center justify-evenly">
-    <label for="subject" class="w-32 text-right pr-4 text-stone-700">Subject</label>
-    <input class="rounded-3xl border-none bg-yellow-400 bg-opacity-50 px-6 py-2 text-center text-inherit placeholder-slate-200 shadow-lg outline-none backdrop-blur-md" id="subject" name="subject"/>
-  </div> -->
-  <label for="subject" class="mb-2 text-sm sr-only">Subject</label>
-  <div class="relative">
-      <!-- <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-          <svg class="w-4 h-4 text-stone-500 dark:text-stone-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-          </svg>
-      </div> -->
-      <input type="search" id="subject" name="subject" class="border-none rounded-3xl bg-opacity-70 block w-full p-4 ps-10 text-sm lg:text-base text-stone-900 bg-stone-400 focus:ring-yellow-500 focus:border-yellow-500"/>
-      <div class="w-1/5 rounded-3xl absolute end-2.5 bottom-2.5 bg-[rgb(130,103,84)] flex justify-center text-[0.6rem] sm:text-sm xl:text-base  px-4 py-2">SUBJECT</div>
-  </div>
-
-
-
-  <div class="mt-4 flex justify-end ">
-    <button type="submit" class="rounded-3xl bg-[rgb(130,103,84)] bg-opacity-80 px-10 py-2 text-[0.6rem] sm:text-sm xl:text-base shadow-xl backdrop-blur-md transition-colors duration-300 hover:bg-[#bb8c5a]">SEARCH</button>
-  </div>
+<div class="px-3 xl:px-12 pt-4 pb-2 md:pb-4 text-3xl sm:text-4xl md:text-6xl text-[rgba(32,31,31,0.6)]">Search Book</div>
+<form class="relative flex flex-wrap items-stretch md:py-4 px-3 xl:px-12" method="post" action="/searchbook">
+  <input type="search" id="title" name="title"  aria-label="Title" class="bg-stone-100 bg-opacity-80 rounded-s-sm relative m-0 block flex-auto border border-stone-400 bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-stone-500 placeholder:text-sm focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none focus:ring-[rgb(173,138,100)] focus:border-[rgb(173,138,100)] motion-reduce:transition-none " placeholder="Title"/>
+  <input type="search" id="author" name="author" aria-label="First name" class="bg-stone-100 bg-opacity-80 rounded-0 relative m-0 block flex-auto border-x-0 border-stone-400 bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-stone-500 placeholder:text-sm focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none focus:ring-[rgb(173,138,100)] focus:border-[rgb(173,138,100)] motion-reduce:transition-none" placeholder="Author"/>
+  <input type="search" id="subject" name="subject" aria-label="Last name" class="bg-stone-100 bg-opacity-80 rounded-0 relative m-0 block flex-auto border border-stone-400 bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-stone-500 placeholder:text-sm focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none focus:ring-[rgb(173,138,100)] focus:border-[rgb(173,138,100)] motion-reduce:transition-none" placeholder="Subject"/>
+  <button type="submit" class="p-2.5 text-sm font-medium h-full text-white bg-[rgb(173,138,100)] bg-opacity-80 rounded-e-sm backdrop-blur-md transition-colors duration-300 hover:bg-[#ebb072] focus:ring-4 focus:outline-none focus:ring-[#dda161]">
+      <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+      </svg>
+      <span class="sr-only">Search</span>
+  </button>
 </form>

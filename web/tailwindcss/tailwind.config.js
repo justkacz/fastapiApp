@@ -13,7 +13,9 @@ module.exports = {
         'spartan': ["League Spartan", 'serif'],
         'dynalight': ['Playball', 'cursive'],
         'poiret': ['Poiret One', 'sans-serif'],
-        'railway': ['EB Garamond', 'serif']
+        'railway': ['EB Garamond', 'serif'],
+        'revol2': ['Estonia', 'cursive'],
+        'revol': ['Over the Rainbow', 'cursive']
       },
     },
   },

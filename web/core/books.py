@@ -9,19 +9,19 @@ API_KEY = "AIzaSyAbFstk55PIArsCEJA4y2BomWhS3Cb_Fzo"
 
 def api_volume_details(volumeid: str) -> dict:
     book_data={}
-    print(volumeid)
+    # print(volumeid)
     url = f"https://www.googleapis.com/books/v1/volumes/{volumeid}?key={API_KEY}"
     response = requests.get(url).json()
     book_data['id']=response.get('id', None)
     book_data['category']=response['volumeInfo'].get('categories', ["General"])[0].split('/')[0]
-    if len(response['volumeInfo']['authors']) > 1:
-        book_data['authors']=(', ').join(response['volumeInfo']['authors'][:3])
-    elif len(response['volumeInfo']['authors']) == 0:
+    if 'authors' not in response['volumeInfo']:
         book_data['authors']='Author Unknown'
+    elif len(response['volumeInfo']['authors']) > 1:
+        book_data['authors']=(', ').join(response['volumeInfo']['authors'][:3])
     else:
         book_data['authors']=response['volumeInfo']['authors'][0]
     book_data['title']=response['volumeInfo'].get('title', None)
-    book_data['description']=re.sub(r'<.[a-z]>|<[a-z]>', '', response['volumeInfo'].get('description', 'None'))
+    book_data['description']=re.sub(r'<.[a-z]>|<[a-z]>', '', response['volumeInfo'].get('description', 'Description not available.'))
     # book_data['description']=response['volumeInfo'].get('description', None)
     book_data['rating'] = response['volumeInfo'].get('averageRating', 0)
     book_data['ratingcnt'] = response['volumeInfo'].get('ratingsCount', 0)
@@ -75,42 +75,51 @@ async def delete_book(volumeid: str, email: str):
 
 async def search_book(title: str, author: str, subject: str):
     url = f"https://www.googleapis.com/books/v1/volumes?q={title}+inauthor:{author}+intitle:{title}+insubject:{subject}&printType=books&maxResults=40&key={API_KEY}"
-    response = requests.get(url).json()
-    if "items" in response:
+    print(url)
+    response_search = requests.get(url).json()
+    # print("title:",title)
+    # print("author:",author)
+    # print("subject:",subject)
+    # print("response:",response_search)
+    if "items" in response_search:
         pages = []
         ranges = []
         n=12
-        for j in range(0,math.ceil(len(response['items'])/12)):
+        for j in range(0,math.ceil(len(response_search['items'])/12)):
             pages.append(j+1)
             ranges.append(slice(j*n, j*n+n))
         all_results = []
-        for i in range(len(response["items"])):
+        for i in range(len(response_search["items"])):
             # v_url = f"https://www.googleapis.com/books/v1/volumes/{response["items"][i]["id"]}?key={API_KEY}"
             # v_response = requests.get(v_url).json()
-            volume_details = api_volume_details(response["items"][i]["id"])
+            # print('volumeid:', response_search["items"][i]["id"])
+            volume_details = api_volume_details(response_search["items"][i]["id"])
+            # print('volume_details:', volume_details)
             all_results.append(
                 {
-                    "volumeid": response["items"][i]["id"],
-                    "title": response["items"][i]["volumeInfo"].get("title", None),
-                    "authors": response["items"][i]["volumeInfo"].get(
+                    "volumeid": response_search["items"][i]["id"],
+                    "title": response_search["items"][i]["volumeInfo"].get("title", None),
+                    "authors": response_search["items"][i]["volumeInfo"].get(
                         "authors", "Data not available"
                     )[0],
-                    "publishedDate": response["items"][i]["volumeInfo"].get(
+                    "publishedDate": response_search["items"][i]["volumeInfo"].get(
                         "publishedDate", "Data not available"
                     ),
-                    "description": volume_details['description'],
-                    "rating": volume_details['rating'],
-                    "ratingcnt": volume_details['ratingcnt'],
-                    "category": volume_details['category'],
-                    "language": response["items"][i]["volumeInfo"].get(
+                    # "description": volume_details['description'],
+                    # "rating": volume_details['rating'],
+                    # "ratingcnt": volume_details['ratingcnt'],
+                    # "category": volume_details['category'],
+                    "volume_details": volume_details,
+                    "language": response_search["items"][i]["volumeInfo"].get(
                         "language", "Data not available"
                     ),
                     # "image": response['items'][i]['volumeInfo'].get("imageLinks", "Image not available").get("thumbnail", "Image not available"),
-                    "infoLink": response["items"][i]["volumeInfo"].get(
+                    "infoLink": response_search["items"][i]["volumeInfo"].get(
                         "infoLink", "Data not available"
                     ),
                 }
             )
+            # print('*******************************************************************************************************all_results',i, all_results[i])
         return all_results, pages, ranges
     else:
         return None
